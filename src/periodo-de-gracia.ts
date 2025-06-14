@@ -19,17 +19,14 @@ export class PeriodoDeGracia {
         return periodo.equals(this.nroPeriodo);
     }
 
-    aplicar(planDePago: PlanDePago, proximoPago: Pago): void {
+    aplicar(proximoPago: Pago): void {
         if (this.tipo === EPeriodoDeGracia.Total) {
             proximoPago.cuota = proximoPago.amortizacion = new Decimal(0);
+            proximoPago.saldoFinal = proximoPago.saldoInicial.plus(proximoPago.intereses);
         } else {
             proximoPago.cuota = proximoPago.intereses;
             proximoPago.amortizacion = new Decimal(0);
+            proximoPago.saldoFinal = proximoPago.saldoInicial
         }
-
-        throw new Error(
-            "Metodo aplicar no implementado para el tipo de periodo de gracia: " +
-                this.tipo
-        );
     }
 }

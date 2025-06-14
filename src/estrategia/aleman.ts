@@ -47,12 +47,8 @@ export class MetodoAleman extends PlanDePago {
     }
 
     public override calcularIntereses(): Decimal {
-        console.log(
-            "calculando intereses del periodo",
-            this.pagoActual.periodo
-        );
         const tasaDelPeriodo = this.tasasDeInteres.find((t) =>
-            t.esAplicable(this.pagoActual.periodo)
+            t.esAplicable(this.pagoActual.periodo + 1)
         );
         if (!tasaDelPeriodo) {
             throw new Error(
@@ -70,31 +66,42 @@ export class MetodoAleman extends PlanDePago {
         return new Decimal(0);
     }
 
+    public actualizarAmortizacionEntrePagos() {}
+
     public override calcularPlanDePago(periodo?: number) {
         // aplicamos la cuota inicial
         // periodo 0
         this.pagoActual.saldoInicial = this.pagoActual.saldoFinal =
             this.capitalInicial;
 
-        for (let nro = 1; nro < this.periodos.toNumber(); nro++) {
-            const proximosIntereses = this.calcularIntereses();
-            const proximoAmortizacion = this.calcularAmortizacion();
+        for (let nro = 1; nro < this.periodos.toNumber() + 1; nro++) {
+            const amortizacion = this.calcularAmortizacion();
+            const intereses = this.calcularIntereses();
 
             const nuevoPago = new Pago({
                 saldoInicial: this.pagoActual.saldoFinal,
-                intereses: proximosIntereses,
-                amortizacion: proximoAmortizacion,
                 periodo: nro,
-                saldoFinal:
-                    this.pagoActual.saldoFinal.minus(proximoAmortizacion),
-                cuota: proximoAmortizacion.plus(proximosIntereses),
+                amortizacion,
+                intereses,
+                cuota: amortizacion.plus(intereses),
+                saldoFinal: this.pagoActual.saldoFinal.minus(amortizacion),
             });
 
             const periodoDeGracia = this.hayUnPeriodoDeGraciaAplicable(nro);
-
             if (periodoDeGracia) {
-                periodoDeGracia.aplicar(this, nuevoPago);
+                periodoDeGracia.aplicar(nuevoPago);
             }
+
+            // actualizamos el capital incial
+            if (nuevoPago.saldoFinal.greaterThan(this.pagoActual.saldoFinal)) {
+                this.actualizarCapitalInicial(nuevoPago.saldoFinal);
+            }
+
+            nuevoPago.imprimir();
+
+            this.pagoActual.pagoSiguiente = nuevoPago;
+            nuevoPago.pagoPrevio = this.pagoActual;
+            this.pagoActual = nuevoPago;
         }
     }
 }

@@ -33,4 +33,9 @@ export class Pago {
         this.saldoFinal = saldoFinal;
         this.periodo = periodo;
     }
+
+    imprimir() {
+        console.log(`
+periodo: ${this.periodo} saldo inicial: ${this.saldoInicial.toDecimalPlaces(2)} intereses: ${this.intereses.toDecimalPlaces(2)} amortizacion: ${this.amortizacion.toDecimalPlaces(2)} cuota: ${this.cuota.toDecimalPlaces(2)} saldo final: ${this.saldoFinal.toDecimalPlaces(2)}`);
+    }
 }

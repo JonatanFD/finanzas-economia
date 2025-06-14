@@ -14,6 +14,8 @@ export abstract class PlanDePago {
     public cuotaInicial: CuotaInicial;
     public plazo: IntervaloDeTiempo;
 
+    public capitalInicial: Decimal;
+
     public pagoActual: Pago;
     public pagoBase: Pago;
 
@@ -50,6 +52,10 @@ export abstract class PlanDePago {
         });
         this.pagoActual = pagoBase;
         this.pagoBase = pagoBase;
+
+        this.capitalInicial = this.deuda.minus(
+            this.cuotaInicial.calcularCuotaInicial(this.deuda)
+        );
     }
 
     // setup
@@ -59,10 +65,9 @@ export abstract class PlanDePago {
         });
     }
 
-    get capitalInicial(): Decimal {
-        return this.deuda.minus(
-            this.cuotaInicial.calcularCuotaInicial(this.deuda)
-        );
+    actualizarCapitalInicial(nuevoCapital: Decimal){
+        this.capitalInicial = nuevoCapital;
+        return this.capitalInicial;
     }
 
     get periodos() {
