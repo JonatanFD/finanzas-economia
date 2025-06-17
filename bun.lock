@@ -5,6 +5,7 @@
       "name": "finanzas-economia",
       "dependencies": {
         "decimal.js": "^10.5.0",
+        "financejs": "^4.1.0",
       },
       "devDependencies": {
         "@types/bun": "latest",
@@ -22,6 +23,8 @@
     "bun-types": ["bun-types@1.2.16", "", { "dependencies": { "@types/node": "*" } }, "sha512-ciXLrHV4PXax9vHvUrkvun9VPVGOVwbbbBF/Ev1cXz12lyEZMoJpIJABOfPcN9gDJRaiKF9MVbSygLg4NXu3/A=="],
 
     "decimal.js": ["decimal.js@10.5.0", "", {}, "sha512-8vDa8Qxvr/+d94hSh5P3IJwI5t8/c0KsMp+g8bNw9cY2icONa5aPfvKeieW1WlG0WQYwwhJ7mjui2xtiePQSXw=="],
+
+    "financejs": ["financejs@4.1.0", "", {}, "sha512-IE/SpTfCRsdl4TZWCGLo6/NNeg0q0QjU9eOoIxy7BWPCAH2truL3uqK+Kwu3f3kLd1trJK5vRKO+KGRNwNIzfg=="],
 
     "typescript": ["typescript@5.8.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ=="],
 
